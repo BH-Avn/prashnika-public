@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ page.title }}</title>
+<meta name="description" content="{{ page.description }}">
+<link rel="canonical" href="{{ site }}{{ page.path }}">{% if page.robots %}
+<meta name="robots" content="{{ page.robots }}">{% endif %}
+<meta property="og:type" content="{{ page.og_type }}">
+<meta property="og:title" content="{{ page.title }}">
+<meta property="og:description" content="{{ page.description }}">
+<meta property="og:url" content="{{ site }}{{ page.path }}">
+<link rel="stylesheet" href="{{ asset('/static/site.css') }}">
+{% for block in jsonld_blocks %}
+<script type="application/ld+json">{{ block | safe }}</script>
+{% endfor %}
+<script>document.documentElement.classList.add("js");   // page.js is coming</script>
+<script defer src="{{ asset('/static/words.js') }}"></script>
+<script defer src="{{ asset('/static/page.js') }}"></script>
+</head>
+<body>
+<header class="bar">
+  <a class="brand" href="/">Question bank</a>
+  <nav class="topnav" aria-label="Site">
+    <a href="/" data-nav="home"{% if page.nav == "home" %} class="on" aria-current="page"{% endif %}>Home</a>
+    <a href="/?view=questions" data-nav="questions"{% if page.nav == "questions" %} class="on" aria-current="page"{% endif %}>Questions</a>
+    <a href="/papers" data-nav="papers"{% if page.nav == "papers" %} class="on" aria-current="page"{% endif %}>Papers</a>
+    <a href="/isc" data-nav="subjects"{% if page.nav == "subjects" %} class="on" aria-current="page"{% endif %}>Subjects</a>
+    <a href="/chapters" data-nav="chapters"{% if page.nav == "chapters" %} class="on" aria-current="page"{% endif %}>Chapters</a>
+  </nav>
+  <form class="tsearch" action="/" method="get" role="search">
+    <input type="search" name="q" placeholder="Search questions" aria-label="Search every question" autocomplete="off">
+  </form>
+</header>
+
+<main id="main" class="page">
+  <div class="layout">
+    <div class="dialog-body" data-maths>
+      {% if page.back %}<a class="backlink" href="{{ page.back[1] }}" data-back>‹ <span>{{ page.back[0] }}</span></a>{% endif %}
+      {% if not page.own_h1 %}{% if page.kicker %}<p class="lead">{{ page.kicker }}</p>
+      {% endif %}<h1>{{ page.heading }}</h1>{% endif %}
+      {{ page.body_html | safe }}
+    </div>
+  </div>
+</main>
+
+<footer class="foot">
+  <p>Code sample from a question bank. Questions shown on a real deployment belong to their owners.
+    <a href="/about">About</a> · <a href="/privacy">Privacy</a></p>
+</footer>
+</body>
+</html>
